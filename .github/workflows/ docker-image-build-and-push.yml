@@ -22,9 +22,3 @@ jobs:
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           branch: "master"
           usedocker: true
-          docker_build_args: |
-            MAPBOX_ACCESS_KEY
-            MAPBOX_PUBLIC_ACCESS_KEY
-          env:
-            MAPBOX_ACCESS_KEY: ${{secrets.MAPBOX_ACCESS_KEY}}
-            MAPBOX_PUBLIC_ACCESS_KEY: ${{secrets.MAPBOX_PUBLIC_ACCESS_KEY}}
