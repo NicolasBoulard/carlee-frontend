@@ -1,0 +1,32 @@
+# Your workflow name.
+name: Deploy to heroku.
+
+# Run workflow on every push to main branch.
+on:
+  push:
+    branches: [master]
+
+# Your workflows jobs.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Check-out your repository.
+      - name: Checkout
+        uses: actions/checkout@v2
+
+
+
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          branch: "master"
+          usedocker: true
+          docker_build_args: |
+            MAPBOX_ACCESS_KEY
+            MAPBOX_PUBLIC_ACCESS_KEY
+          env:
+            MAPBOX_ACCESS_KEY: ${{ secrets.MAPBOX_ACCESS_KEY }}
+            MAPBOX_PUBLIC_ACCESS_KEY: ${{ secrets.MAPBOX_PUBLIC_ACCESS_KEY }}
