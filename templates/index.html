@@ -33,7 +33,7 @@
                        Voiture
                       </label>
                       <div class="w-full flex">
-                        <input class="appearance-none block  bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-to" type="text" name="car" placeholder="Modèle">
+                        <input class="appearance-none block focus:border-2 focus:border-sky-300 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 w-full leading-tight focus:outline-none focus:bg-white" id="grid-to" type="text" name="car" placeholder="Modèle">
                         <button class="ml-3 hover:shadow-form hover:text-sky-200 rounded-md hover:bg-sky-700 bg-sky-500 py-3 px-3 text-base antialiased font-bold text-white outline-none">RECHERCHER</button>
                       </div>
                     </div>
@@ -42,8 +42,7 @@
                        Point de départ
                       </label>
                       <div class="w-full flex">
-                        <input class="appearance-none block  bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-to" type="text" name="origin" placeholder="Départ">
-                        <button class="ml-3 hover:shadow-form hover:text-sky-200 rounded-md hover:bg-sky-700 bg-sky-500 py-3 px-3 text-base antialiased font-bold text-white outline-none">RECHERCHER</button>
+                        <input value="{{ origin }}" class="appearance-none block focus:border-2 focus:border-sky-300 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 w-10/12 leading-tight focus:outline-none focus:bg-white" id="grid-to" type="text" name="origin" placeholder="Départ">
                       </div>
                     </div>
                     <div class="w-full  px-3 mb-6 md:mb-0 mt-5">
@@ -51,9 +50,10 @@
                        Destination
                       </label>
                       <div class="w-full flex">
-                        <input class="appearance-none block  bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-to" type="text" name="destination" placeholder="Destination">
-                        <button class="ml-3 hover:shadow-form hover:text-sky-200 rounded-md hover:bg-sky-700 bg-sky-500 py-3 px-3 text-base antialiased font-bold text-white outline-none">RECHERCHER</button>
+                        <input value="{{ destination }}" class="appearance-none block focus:border-2 focus:border-sky-300 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 w-full leading-tight focus:outline-none focus:bg-white" id="grid-to" type="text" name="destination" placeholder="Destination">
+                        <button class="min-h-0 ml-3 hover:shadow-form hover:text-sky-200 rounded-md hover:bg-sky-700 bg-sky-500 py-3 px-3 text-base antialiased font-bold text-white outline-none">RECHERCHER</button>
                       </div>
+
                     </div>
                     <!--<div class="w-full md:w-1/2 px-3">
                       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
@@ -71,7 +71,7 @@
             <div class="m-8 relative block rounded-lg shadow-lg px-2 pt-8 pb-6 md:px-10 bg-gradient-to-br from-cyan-700 to-sky-600 hover:cursor-pointer hover:bg-gradient-to-br hover:from-cyan-600 hover:to-sky-500">
               <h2 class="text-3xl font-semibold mb-6 text-white text-center">⏱ Temps de trajet</h2>
 
-              <p class="text-neutral-50 mb-6">
+              <p class="text-neutral-50 mb-6 text-center text-4xl font-light">
                 {{ travel_time }}
               </p>
 

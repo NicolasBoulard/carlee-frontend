@@ -39,3 +39,6 @@ class MapboxPlace:
 
     def get_position(self) -> List[float]:
         return self.place_service.get('features')[0].get('center')
+
+    def get_place_name(self):
+        return self.place_service.get('features')[0].get('place_name')

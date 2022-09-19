@@ -20,6 +20,14 @@ def retrieve_total_travel_time(driving_time: int, charging_time: int):
         int(driving_time), int(charging_time))
     return time
 
+def strfdelta(tdelta):
+    d = {"days": tdelta.days}
+    d["hours"], rem = divmod(tdelta.seconds, 3600)
+    d["minutes"], d["seconds"] = divmod(rem, 60)
+    if tdelta.days:
+        return "{days} jours {hours} heures {minutes} minutes".format(**d)
+    else:
+        return "{hours} heures {minutes} minutes".format(**d)
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
@@ -38,7 +46,9 @@ def main():
         destination_place = MapboxPlace(destination)
         direction = MapboxDirection(origin_place.get_position(), destination_place.get_position())
 
-        total_time = datetime.timedelta(seconds=retrieve_total_travel_time(direction.get_duration(), 30 * 60))
+        total_time = strfdelta(datetime.timedelta(seconds=retrieve_total_travel_time(direction.get_duration(), 30 * 60)))
+        origin = origin_place.get_place_name()
+        destination = destination_place.get_place_name()
 
     return render_template('index.html', travel_time=total_time, ACCESS_KEY=Config.MAPBOX_ACCESS_KEY, origin=origin,
                            destination=destination)
