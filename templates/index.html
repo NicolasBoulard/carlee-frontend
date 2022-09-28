@@ -73,6 +73,7 @@
 
               <p class="text-neutral-50 mb-6 text-center text-4xl font-light">
                 {{ travel_time }}
+                  {{ waypoints }}
               </p>
 
 
@@ -109,6 +110,9 @@
             );
             map.on('load', () => {
                 directions.setOrigin('{{ origin }}'),
+                {% for wp in waypoints %}
+                directions.addWaypoint({{ loop.index0  }}, [{{ wp[0] }}, {{ wp[1] }}]),
+                {% endfor %}
                 directions.setDestination('{{ destination }}'),
                 directions.options.controls.inputs = false
             });
