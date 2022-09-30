@@ -13,8 +13,13 @@ class MapboxDirection:
     Mapbox API interaction for retreiving direction
     """
 
-    def __init__(self, origin_pos, destination_pos):
-        url = f"https://api.mapbox.com/directions/v5/mapbox/driving/{origin_pos[0]},{origin_pos[1]};{destination_pos[0]},{destination_pos[1]}?access_token={Config.MAPBOX_PUBLIC_ACCESS_KEY}&steps=true"
+    def __init__(self, origin_pos, destination_pos, waypoints=None):
+        waypoints_str = ""
+        if waypoints:
+            for wp in waypoints:
+                waypoints_str += f";{wp[0]},{wp[1]}"
+
+        url = f"https://api.mapbox.com/directions/v5/mapbox/driving/{origin_pos[0]},{origin_pos[1]}{waypoints_str};{destination_pos[0]},{destination_pos[1]}?access_token={Config.MAPBOX_PUBLIC_ACCESS_KEY}&steps=true"
         request = requests.get(url, headers=MAPBOX_HEADERS)
 
         if request.status_code == 200:
