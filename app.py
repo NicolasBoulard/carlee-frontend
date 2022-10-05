@@ -3,14 +3,13 @@ from typing import List
 from flask import Flask, render_template, request
 from zeep import Client
 
-from services import MapboxDirection, MapboxPlace, ChargingStation
+from services import MapboxDirection, MapboxPlace, ChargingStation, ChargeTrip
 from settings import Config
 import requests
 import datetime
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-
 
 def build_json_waypoint_markers(waypoints):
     waypoints_data = []
@@ -28,7 +27,7 @@ def build_json_waypoint_markers(waypoints):
 
 
 def retrieve_total_travel_time(number_stop: int, driving_time: int, charging_time: int):
-    client = Client('http://localhost:8000/?wsdl')
+    client = Client(f"{Config.MAPBOX_ACCESS_KEY}/?wsdl")
     time = client.service.travel_time(int(number_stop),
                                       int(driving_time), int(charging_time))
     return time
@@ -50,7 +49,10 @@ def strfdelta(tdelta):
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
+    test = ChargeTrip("audi q4")
+    test.get_jsona()
     total_time = None
+    charging_time = None
     origin = ""
     destination = ""
     list_positions = []

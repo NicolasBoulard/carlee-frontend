@@ -89,3 +89,70 @@ class ChargingStation:
             return self.charging_station_service['records'][0]['fields']['geo_point_borne']
         else:
             return None
+
+class ChargeTrip:
+
+    def __init__(self, search):
+        url = "https://api.chargetrip.io/graphql"
+        headers = {'x-client-id': Config.CHARGETRIP_CLIENT_ID, 'x-app-id': Config.CHARGETRIP_APP_ID}
+        body = """\
+            query carListAll {
+              carList (size: 1000, search: {search}) {
+                id
+                naming {
+                  make
+                  model
+                  version
+                  edition
+                  chargetrip_version
+                }
+                adapters {
+                  standard
+                  power
+                  time
+                  speed
+                }
+                battery {
+                  usable_kwh
+                  full_kwh
+                }
+                range {
+                  chargetrip_range {
+                    best
+                    worst
+                  }
+                }
+                media {
+                  image {
+                    id
+                    type
+                    url
+                    height
+                    width
+                    thumbnail_url
+                    thumbnail_height
+                    thumbnail_width
+                  }
+                  brand {
+                    id
+                    type
+                    url
+                    height
+                    width
+                    thumbnail_url
+                    thumbnail_height
+                    thumbnail_width
+                  }
+                  video {
+                    id
+                    url
+                  }
+                }
+              }
+            }\
+            """.format(search=search)
+        variables = {"size": 50}
+        self.charge_trip_service = requests.post(url=url, json={"query": body, "variables": variables}, headers=headers).json()
+
+    def get_jsona(self):
+        print(self.charge_trip_service)
