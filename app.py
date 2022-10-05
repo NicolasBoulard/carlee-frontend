@@ -49,7 +49,7 @@ def strfdelta(tdelta):
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
-    test = ChargeTrip("audi q4")
+    test = ChargeTrip("audi ")
     test.get_jsona()
     total_time = None
     charging_time = None

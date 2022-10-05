@@ -95,9 +95,9 @@ class ChargeTrip:
     def __init__(self, search):
         url = "https://api.chargetrip.io/graphql"
         headers = {'x-client-id': Config.CHARGETRIP_CLIENT_ID, 'x-app-id': Config.CHARGETRIP_APP_ID}
-        body = """\
+        body = """
             query carListAll {
-              carList (size: 1000, search: {search}) {
+              carList (size: 1000, search: "{search}") {
                 id
                 naming {
                   make
@@ -149,8 +149,8 @@ class ChargeTrip:
                   }
                 }
               }
-            }\
-            """.format(search=search)
+            }
+            """.replace("{search}", search)
         variables = {"size": 50}
         self.charge_trip_service = requests.post(url=url, json={"query": body, "variables": variables}, headers=headers).json()
 
