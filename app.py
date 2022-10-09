@@ -46,6 +46,13 @@ def strfdelta(tdelta):
             return "{hours} heure {minutes} minutes".format(**d)
         return "{hours} heures {minutes} minutes".format(**d)
 
+@app.route('/car', methods=['POST', 'GET'])
+def car():
+    if request.data:
+        car_list = ChargeTrip(request.data.decode("utf-8"))
+        return car_list.get_car_list()
+    return 'No data provided', 400
+
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
@@ -85,8 +92,8 @@ def main():
             seconds=retrieve_total_travel_time(len(list_positions), new_direction.get_duration(), charging_time_car)))
         waypoints_markers = build_json_waypoint_markers(list_positions)
 
-        if direction.get_distance() > 500:
-            print(direction.get_distance())
+        #if direction.get_distance() > 500:
+        #    print(direction.get_distance())
 
     return render_template('index.html', travel_time=total_time, charging_time=charging_time, ACCESS_KEY=Config.MAPBOX_ACCESS_KEY, origin=origin,
                            destination=destination, waypoints=list_positions, waypoints_markers=waypoints_markers)

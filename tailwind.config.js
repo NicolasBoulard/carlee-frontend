@@ -5,6 +5,9 @@ module.exports = {
     "./static/src/**/*.js"
   ],
   theme: {
+    backgroundPosition: {
+      'bg-left-1' : 'no-repeat center left 1rem'
+    },
     extend: {},
   },
   plugins: [],

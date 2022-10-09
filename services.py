@@ -97,7 +97,7 @@ class ChargeTrip:
         headers = {'x-client-id': Config.CHARGETRIP_CLIENT_ID, 'x-app-id': Config.CHARGETRIP_APP_ID}
         body = """
             query carListAll {
-              carList (size: 1000, search: "{search}") {
+              carList (size: 8, search: "{search}") {
                 id
                 naming {
                   make
@@ -154,5 +154,7 @@ class ChargeTrip:
         variables = {"size": 50}
         self.charge_trip_service = requests.post(url=url, json={"query": body, "variables": variables}, headers=headers).json()
 
+    def get_car_list(self):
+        return self.charge_trip_service['data']['carList']
     def get_jsona(self):
         print(self.charge_trip_service)
