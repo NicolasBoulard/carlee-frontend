@@ -152,9 +152,65 @@ class ChargeTrip:
             }
             """.replace("{search}", search)
         variables = {"size": 50}
-        self.charge_trip_service = requests.post(url=url, json={"query": body, "variables": variables}, headers=headers).json()
+        self.charge_trip_service = requests.post(url=url, json={"query": body}, headers=headers).json()
 
     def get_car_list(self):
         return self.charge_trip_service['data']['carList']
-    def get_jsona(self):
-        print(self.charge_trip_service)
+
+
+class ChargeTripCar:
+    def __init__(self, id):
+        url = "https://api.chargetrip.io/graphql"
+        headers = {'x-client-id': Config.CHARGETRIP_CLIENT_ID, 'x-app-id': Config.CHARGETRIP_APP_ID}
+        body = """
+            query car {
+              car(id: "{id}") {
+                id
+                naming {
+                  make
+                  model
+                  version
+                  edition
+                  chargetrip_version
+                }
+                connectors {
+                  standard
+                  power
+                  time
+                  speed
+                }
+                adapters {
+                  standard
+                  power
+                  time
+                  speed
+                }
+                battery {
+                  usable_kwh
+                  full_kwh
+                }
+                range {
+                  real
+                  real_is_estimated
+                  worst{
+                    highway
+                    city
+                    combined
+                  }
+                  best {
+                    highway
+                    city
+                    combined
+                  }
+                  chargetrip_range {
+                    best
+                    worst
+                  }
+                }
+              }
+            }
+            """.replace("{id}", id)
+        self.charge_trip_car_service = requests.post(url=url, json={"query": body}, headers=headers).json()
+
+    def get_mean_km(self):
+        return self.charge_trip_car_service['data']['car']['range']['real']

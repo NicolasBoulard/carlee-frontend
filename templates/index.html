@@ -15,10 +15,10 @@
 </head>
 <body class="bg-gradient-to-r from-slate-800 to-slate-700 ">
     <div class="py-1">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="lg:text-center">
-          <h2 class="text-4xl font-semibold text-indigo-600 ">Carlee</h2>
-          <p class="mt-2 text-sm font-bold leading-8 tracking-tight text-gray-500 italic">Don't be out of power anymore 🚗</p>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 justify-items-center grid">
+          <img src="{{ url_for('static', filename='src/logo.png') }}" class="h-16"/>
+        <div class="text-center">
+          <p class="mb-2 text-sm font-ligth tracking-tight text-gray-500 uppercase">Recherchez le meilleur itinéraire</p>
         </div>
       </div>
     </div>
@@ -26,41 +26,35 @@
         <div class="basis-1/2">
             <div class="">
                 <form action="" method="POST">
-                        <div class="rounded-md bg-slate-100 mx-7 flex flex-col justify-center items-center">
-                        <input style="background: url('{{ url_for('static', filename='src/search.png') }}') no-repeat center left 1rem;" class="h-12 pl-12 w-1/2 placeholder:bold placeholder:ml-3 border-2 border-slate-500 rounded-full m-4" type="text" name="car" placeholder="Recherchez un modèle" />
-                        <div name="car-list" class="max-h-72 overflow-y-auto">
-
-                        </div>
+                    <div class="rounded-md bg-slate-100 mx-7 flex flex-col justify-center items-center">
+                        <input style="background: url('{{ url_for('static', filename='src/search.png') }}') no-repeat center left 1rem;" autocomplete="off" class="h-12 pl-12 w-1/2 placeholder:bold placeholder:ml-3 border-2 border-slate-500 rounded-full m-4" type="text" name="car" placeholder="Recherchez un modèle"/>
+                        <input class="hidden" name="car-selected"/>
+                        <div name="car-list" class="max-h-72 overflow-y-auto"></div>
                     </div>
                     <div class="flex flex-col justify-center items-center">
                         <div class="w-full max-w-lg">
                           <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full  px-3 mb-6 md:mb-0 mt-5">
-                              <label class="block uppercase tracking-wide text-gray-200 text-xs font-bold mb-2" for="grid-to">
-                               Voiture
-                              </label>
-                              <div class="w-full flex">
-                                <input class="appearance-none block focus:border-2 focus:border-sky-300 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 w-full leading-tight focus:outline-none focus:bg-white" id="grid-to" type="text" name="car" placeholder="Modèle">
-                                <button class="ml-3 hover:shadow-form hover:text-sky-200 rounded-md hover:bg-sky-700 bg-sky-500 py-3 px-3 text-base antialiased font-bold text-white outline-none">RECHERCHER</button>
-                              </div>
-                            </div>
-                            <div class="w-full  px-3 mb-6 md:mb-0 mt-5">
+                            <div class="w-full px-3 mb-6 md:mb-0 mt-5">
                               <label class="block uppercase tracking-wide text-gray-200 text-xs font-bold mb-2" for="grid-to">
                                Point de départ
                               </label>
                               <div class="w-full flex">
-                                <input value="{{ origin }}" class="appearance-none block focus:border-2 focus:border-sky-300 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 w-10/12 leading-tight focus:outline-none focus:bg-white" id="grid-to" type="text" name="origin" placeholder="Départ">
+                                  <input value="{{ origin }}" autocomplete="off" class="h-12 bg-slate-100 pl-12 w-1/2 placeholder:bold placeholder:ml-3 border-2 border-slate-500 rounded-full m-2 w-full" style="background: url('{{ url_for('static', filename='src/map.png') }}') no-repeat center left 1rem #e5e7eb;" id="grid-to" type="text" name="origin" placeholder="Départ"/>
                               </div>
                             </div>
-                            <div class="w-full  px-3 mb-6 md:mb-0 mt-5">
+                            <div class="w-full px-3 mb-6 md:mb-0 mt-5">
                               <label class="block uppercase tracking-wide text-gray-200 text-xs font-bold mb-2" for="grid-to">
                                Destination
                               </label>
                               <div class="w-full flex">
-                                <input value="{{ destination }}" class="appearance-none block focus:border-2 focus:border-sky-300 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 w-full leading-tight focus:outline-none focus:bg-white" id="grid-to" type="text" name="destination" placeholder="Destination">
-                                <button class="min-h-0 ml-3 hover:shadow-form hover:text-sky-200 rounded-md hover:bg-sky-700 bg-sky-500 py-3 px-3 text-base antialiased font-bold text-white outline-none">RECHERCHER</button>
+                                <input value="{{ destination }}" autocomplete="off" class="h-12 bg-slate-100 pl-12 w-1/2 placeholder:bold placeholder:ml-3 border-2 border-slate-500 rounded-full m-2 w-full" style="background: url('{{ url_for('static', filename='src/finish-flag.png') }}') no-repeat center left 1rem #e5e7eb;" id="grid-to" type="text" name="destination" placeholder="Destination"/>
                               </div>
 
+                            </div>
+                            <div class="w-full px-3 mb-6 md:mb-0 mt-5">
+                                <div class="w-full flex flex-col">
+                                    <button class="min-h-0 m-2 hover:shadow-form hover:text-sky-200 rounded-full hover:bg-sky-700 bg-sky-500 py-3 px-5 text-base antialiased font-bold text-white outline-none">RECHERCHER</button>
+                                </div>
                             </div>
                             <!--<div class="w-full md:w-1/2 px-3">
                               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
@@ -77,7 +71,7 @@
 
 
             {% if travel_time %}
-            <div class="m-8 relative block rounded-lg shadow-lg px-2 pt-8 pb-6 md:px-10 bg-gradient-to-br from-cyan-700 to-sky-600 hover:cursor-pointer hover:bg-gradient-to-br hover:from-cyan-600 hover:to-sky-500">
+            <div class="mx-8 relative block rounded-lg shadow-lg px-2 pt-8 pb-6 md:px-10 bg-gradient-to-br from-cyan-700 to-sky-600 hover:cursor-pointer hover:bg-gradient-to-br hover:from-cyan-600 hover:to-sky-500">
                 <h2 class="text-3xl font-semibold mb-6 text-white text-center">⏱ Temps de trajet</h2>
 
                 <p class="text-neutral-50 mb-6 text-center text-4xl font-light">
@@ -91,7 +85,7 @@
             </div>
             {% endif %}
         </div>
-        <div class="basis-1/2"><div id='map' style='width: 100%; height: 100%;'></div></div>
+        <div class="basis-1/2"><div class="rounded-tl-md" id='map' style='width: 100%; height: 100%;'></div></div>
     </div>
     <script>
             const waypointjson = { "waypoints": {{ waypoints_markers | safe}} };
@@ -141,6 +135,14 @@
             }
     </script>
     <script>
+        function carSelection(obj,id){
+            for (let carSelect of document.getElementsByName('car-select')) {
+                carSelect.classList.remove("bg-sky-200")
+            }
+            obj.classList.add("bg-sky-200")
+            document.getElementsByName('car-selected')[0].value = id
+            console.log(document.getElementsByName('car-selected')[0].value)
+        }
         const inputCar = document.getElementsByName('car');
 
         inputCar[0].addEventListener('input', async (event) => {
@@ -159,13 +161,13 @@
                 const carList = await response.json();
 
                 for(const car of carList){
-                    console.log(carList)
+                    carId = car['id']
                     carBrand = car['naming']['make']
                     carImg = car['media']['image']['url']
                     carModel = car['naming']['model']
                     carVersion = car['naming']['chargetrip_version']
                     carAutonomyMax = car['range']['chargetrip_range']['best']
-                    carFromJSONHTML = `<div class="border-t-2 border-slate-300 min-w-full py-3 hover:bg-sky-100 hover:cursor-pointer group">
+                    carFromJSONHTML = `<div name="car-select" onclick="carSelection(this,'`+ carId +`')" class="visited:bg-green-700 border-t-2 border-slate-300 min-w-full py-3 hover:bg-sky-100 hover:cursor-pointer group">
                                         <div class="flex flex-row">
                                             <div class="basis-1/3 p-2">
                                                 <img class="group-hover:bg-neutral-50 bg-sky-100 rounded-md" src="`+ carImg +`"/>

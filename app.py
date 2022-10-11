@@ -3,7 +3,7 @@ from typing import List
 from flask import Flask, render_template, request
 from zeep import Client
 
-from services import MapboxDirection, MapboxPlace, ChargingStation, ChargeTrip
+from services import MapboxDirection, MapboxPlace, ChargingStation, ChargeTrip, ChargeTripCar
 from settings import Config
 import requests
 import datetime
@@ -27,7 +27,7 @@ def build_json_waypoint_markers(waypoints):
 
 
 def retrieve_total_travel_time(number_stop: int, driving_time: int, charging_time: int):
-    client = Client(f"{Config.MAPBOX_ACCESS_KEY}/?wsdl")
+    client = Client(f"{Config.CARLEE_SOAP}/?wsdl")
     time = client.service.travel_time(int(number_stop),
                                       int(driving_time), int(charging_time))
     return time
@@ -56,8 +56,7 @@ def car():
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
-    test = ChargeTrip("audi ")
-    test.get_jsona()
+    car_id = ""
     total_time = None
     charging_time = None
     origin = ""
@@ -71,7 +70,11 @@ def main():
     if (request.form.get('destination')):
         destination = request.form.get('destination')
 
-    if origin and destination:
+    if (request.form.get('car-selected')):
+        car_id = request.form.get('car-selected')
+        print(car_id)
+
+    if origin and destination and car_id:
         origin_place = MapboxPlace(origin)
         destination_place = MapboxPlace(destination)
         direction = MapboxDirection(origin_place.get_position(), destination_place.get_position())
@@ -79,7 +82,10 @@ def main():
         origin = origin_place.get_place_name()
         destination = destination_place.get_place_name()
 
-        for positions_no_battery in direction.get_position_charge_needed(60):
+        car = ChargeTripCar(car_id)
+        car_autonomy = car.get_mean_km()
+
+        for positions_no_battery in direction.get_position_charge_needed(car_autonomy):
             position_charger = ChargingStation(positions_no_battery).get_position()
             if position_charger:
                 list_positions.append(position_charger)
@@ -91,9 +97,6 @@ def main():
         total_time = strfdelta(datetime.timedelta(
             seconds=retrieve_total_travel_time(len(list_positions), new_direction.get_duration(), charging_time_car)))
         waypoints_markers = build_json_waypoint_markers(list_positions)
-
-        #if direction.get_distance() > 500:
-        #    print(direction.get_distance())
 
     return render_template('index.html', travel_time=total_time, charging_time=charging_time, ACCESS_KEY=Config.MAPBOX_ACCESS_KEY, origin=origin,
                            destination=destination, waypoints=list_positions, waypoints_markers=waypoints_markers)
