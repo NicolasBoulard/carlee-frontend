@@ -151,7 +151,7 @@
                   carElement.removeChild(carElement.firstChild);
                 }
             if(event.target.value != ""){
-                const response = await fetch('http://{{ HOST }}:{{ PORT }}/car', {
+                const response = await fetch('{{ APP_URL }}/car', {
                     method: 'POST',
                     body: event.target.value,
                     headers: {

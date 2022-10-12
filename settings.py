@@ -5,5 +5,4 @@ class Config(object):
     CARLEE_SOAP = environ.get('CARLEE_SOAP')
     CHARGETRIP_CLIENT_ID = environ.get('CHARGETRIP_CLIENT_ID')
     CHARGETRIP_APP_ID = environ.get('CHARGETRIP_APP_ID')
-    HOST = environ.get('HOST')
-    PORT = environ.get('PORT')
+    APP_URL = environ.get('APP_URL')
