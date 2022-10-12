@@ -48,7 +48,7 @@ def strfdelta(tdelta):
 
 
 @app.route('/car1', methods=['POST'])
-def car():
+def car1():
     return 'hello'
 
 @app.route('/car', methods=['POST'])
