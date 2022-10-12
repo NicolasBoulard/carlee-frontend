@@ -46,12 +46,15 @@ def strfdelta(tdelta):
             return "{hours} heure {minutes} minutes".format(**d)
         return "{hours} heures {minutes} minutes".format(**d)
 
+
+@app.route('/car1', methods=['POST'])
+def car():
+    return 'hello'
+
 @app.route('/car', methods=['POST'])
 def car():
     if request.data:
-        print(request.data.decode("utf-8"))
         car_list = ChargeTrip(request.data.decode("utf-8"))
-        print('######')
         return car_list.get_car_list()
     return 'No data provided', 400
 
