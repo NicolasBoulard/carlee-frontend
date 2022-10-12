@@ -2,10 +2,14 @@ from typing import List
 from settings import Config
 import requests
 
-MAPBOX_HEADERS = {'Content-type': 'application/x-www-form-urlencoded',
-                  'Host': 'api.mapbox.com'}
-OPENDATA_HEADERS = {'Content-type': 'application/x-www-form-urlencoded',
-                    'Host': 'odre.opendatasoft.com'}
+MAPBOX_HEADERS = {
+    "Content-type": "application/x-www-form-urlencoded",
+    "Host": "api.mapbox.com",
+}
+OPENDATA_HEADERS = {
+    "Content-type": "application/x-www-form-urlencoded",
+    "Host": "odre.opendatasoft.com",
+}
 
 
 class MapboxDirection:
@@ -28,25 +32,23 @@ class MapboxDirection:
             raise Exception("Error while calling mapbox api (status code != 200)")
 
     def get_duration(self):
-        return self.direction_service.get('routes')[0].get('duration')
+        return self.direction_service.get("routes")[0].get("duration")
 
     def get_distance(self):
-        return round(self.direction_service.get('routes')[0].get('distance')/1000)
+        return round(self.direction_service.get("routes")[0].get("distance") / 1000)
 
     def get_position_charge_needed(self, distance):
         current_distance = 0
         positions_battery_limit = []
-        for step in self.direction_service.get('routes')[0].get('legs')[0].get('steps'):
-            current_distance += float(step.get('distance')/1000)
+        for step in self.direction_service.get("routes")[0].get("legs")[0].get("steps"):
+            current_distance += float(step.get("distance") / 1000)
             if current_distance > distance:
                 positions_battery_limit.append(step)
                 current_distance = 0
         positions_lon_lan = []
         for positions in positions_battery_limit:
-            positions_lon_lan.append(positions.get('intersections')[-1].get('location'))
+            positions_lon_lan.append(positions.get("intersections")[-1].get("location"))
         return positions_lon_lan
-
-
 
 
 class MapboxPlace:
@@ -64,10 +66,10 @@ class MapboxPlace:
             raise Exception("Error while calling mapbox api (status code != 200)")
 
     def get_position(self) -> List[float]:
-        return self.place_service.get('features')[0].get('center')
+        return self.place_service.get("features")[0].get("center")
 
     def get_place_name(self):
-        return self.place_service.get('features')[0].get('place_name')
+        return self.place_service.get("features")[0].get("place_name")
 
 
 class ChargingStation:
@@ -85,16 +87,21 @@ class ChargingStation:
             raise Exception("Error while calling opendatasoft api (status code != 200)")
 
     def get_position(self):
-        if len(self.charging_station_service['records']) > 0:
-            return self.charging_station_service['records'][0]['fields']['geo_point_borne']
+        if len(self.charging_station_service["records"]) > 0:
+            return self.charging_station_service["records"][0]["fields"][
+                "geo_point_borne"
+            ]
         else:
             return None
 
-class ChargeTrip:
 
+class ChargeTrip:
     def __init__(self, search):
         url = "https://api.chargetrip.io/graphql"
-        headers = {'x-client-id': Config.CHARGETRIP_CLIENT_ID, 'x-app-id': Config.CHARGETRIP_APP_ID}
+        headers = {
+            "x-client-id": Config.CHARGETRIP_CLIENT_ID,
+            "x-app-id": Config.CHARGETRIP_APP_ID,
+        }
         body = """
             query carListAll {
               carList (size: 8, search: "{search}") {
@@ -150,18 +157,25 @@ class ChargeTrip:
                 }
               }
             }
-            """.replace("{search}", search)
+            """.replace(
+            "{search}", search
+        )
         variables = {"size": 50}
-        self.charge_trip_service = requests.post(url=url, json={"query": body}, headers=headers).json()
+        self.charge_trip_service = requests.post(
+            url=url, json={"query": body}, headers=headers
+        ).json()
 
     def get_car_list(self):
-        return self.charge_trip_service['data']['carList']
+        return self.charge_trip_service["data"]["carList"]
 
 
 class ChargeTripCar:
     def __init__(self, id):
         url = "https://api.chargetrip.io/graphql"
-        headers = {'x-client-id': Config.CHARGETRIP_CLIENT_ID, 'x-app-id': Config.CHARGETRIP_APP_ID}
+        headers = {
+            "x-client-id": Config.CHARGETRIP_CLIENT_ID,
+            "x-app-id": Config.CHARGETRIP_APP_ID,
+        }
         body = """
             query car {
               car(id: "{id}") {
@@ -209,8 +223,12 @@ class ChargeTripCar:
                 }
               }
             }
-            """.replace("{id}", id)
-        self.charge_trip_car_service = requests.post(url=url, json={"query": body}, headers=headers).json()
+            """.replace(
+            "{id}", id
+        )
+        self.charge_trip_car_service = requests.post(
+            url=url, json={"query": body}, headers=headers
+        ).json()
 
     def get_mean_km(self):
-        return self.charge_trip_car_service['data']['car']['range']['real']
+        return self.charge_trip_car_service["data"]["car"]["range"]["real"]
