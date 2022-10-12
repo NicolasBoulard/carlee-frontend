@@ -99,7 +99,7 @@ def main():
         waypoints_markers = build_json_waypoint_markers(list_positions)
 
     return render_template('index.html', travel_time=total_time, charging_time=charging_time, ACCESS_KEY=Config.MAPBOX_ACCESS_KEY, origin=origin,
-                           destination=destination, waypoints=list_positions, waypoints_markers=waypoints_markers)
+                           destination=destination, waypoints=list_positions, waypoints_markers=waypoints_markers, HOST=Config.HOST, PORT=Config.PORT)
 
 
 if __name__ == '__main__':
